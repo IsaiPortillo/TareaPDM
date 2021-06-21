@@ -1,25 +1,36 @@
 package com.example.hotelreservationapp.model;
 
-public class RecentsData {
-    String id;
+public class Reservacion {
+
+
+    String reservacionId;
+    String clientName;
     String bedroomName;
     String bedroomNumber;
     String price;
-    Integer imageUrl;
 
-    public RecentsData(String id, String bedroomName, String bedroomNumber, String price, Integer imageUrl) {
+    public Reservacion(String reservacionId, String clientName, String bedroomName, String bedroomNumber, String price) {
+        this.reservacionId = reservacionId;
+        this.clientName = clientName;
         this.bedroomName = bedroomName;
         this.bedroomNumber = bedroomNumber;
         this.price = price;
-        this.imageUrl = imageUrl;
     }
 
-    public Integer getImageUrl() {
-        return imageUrl;
+    public String getReservacionId() {
+        return reservacionId;
     }
 
-    public void setImageUrl(Integer imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setReservacionId(String reservacionId) {
+        this.reservacionId = reservacionId;
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
     }
 
     public String getBedroomName() {
@@ -45,8 +56,4 @@ public class RecentsData {
     public void setPrice(String price) {
         this.price = price;
     }
-
-    public String getId() {return id;}
-
-    public void setId(String id) {this.id = id;}
 }
