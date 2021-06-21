@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "121561721144",
+    "firebase_url": "https://reserva-hoteles-happy-lamb-default-rtdb.firebaseio.com",
+    "project_id": "reserva-hoteles-happy-lamb",
+    "storage_bucket": "reserva-hoteles-happy-lamb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:121561721144:android:1d205cf7383a3cc404b9cd",
+        "android_client_info": {
+          "package_name": "com.example.hotelreservationapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "121561721144-etbelfj1bltmed2sjv71mabl47a6jukn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.hotelreservationapp",
+            "certificate_hash": "02557c54cba6668bd39e193c5c8772ece9018206"
+          }
+        },
+        {
+          "client_id": "121561721144-qhavbitvt4s0ai3c2tpoompqtud4ddrq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjdyonlLiAPVXjG_ozFh38o-BH6y3ruuI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "121561721144-qhavbitvt4s0ai3c2tpoompqtud4ddrq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
