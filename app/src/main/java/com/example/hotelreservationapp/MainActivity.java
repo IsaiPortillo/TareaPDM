@@ -80,18 +80,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         View.OnClickListener clickListener = v -> {
             if (v.equals(userImage)) {
-                FirebaseAuth.getInstance().signOut();
-                FirebaseUser currentUser = mAuth.getCurrentUser();
-                updateUI(currentUser);
+                logout();
             }
         };
         userImage.setOnClickListener(clickListener);
 
         List<RecentsData> recentsDataList = new ArrayList<>();
-        recentsDataList.add(new RecentsData("Underwater Bedroom","BR1","$120", R.drawable.habitacion1));
-        recentsDataList.add(new RecentsData("Besto Bedroom","BR2","$300", R.drawable.habitacion2));
-        recentsDataList.add(new RecentsData("Underwater Bedroom","BR3","$125", R.drawable.habitacion1));
-        recentsDataList.add(new RecentsData("Besto Bedroom 2","BR4","$400", R.drawable.habitacion2));
+        recentsDataList.add(new RecentsData("1","Underwater Bedroom","BR1","$120", R.drawable.habitacion1));
+        recentsDataList.add(new RecentsData("2","Besto Bedroom","BR2","$300", R.drawable.habitacion2));
+        recentsDataList.add(new RecentsData("3","Underwater Bedroom","BR3","$125", R.drawable.habitacion1));
+        recentsDataList.add(new RecentsData("4","Besto Bedroom 2","BR4","$400", R.drawable.habitacion2));
 
         setRecentRecycle(recentsDataList);
 
@@ -125,8 +123,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     }
 
-    public void login(View view){
-
+    public void logout(){
+        FirebaseAuth.getInstance().signOut();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);
     }
 
     @Override
