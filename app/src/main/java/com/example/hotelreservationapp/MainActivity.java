@@ -110,6 +110,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         topRoomsRecycle.setAdapter(topRoomsAdapter);
     }
 
+    public void login(View view){
+
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -182,6 +186,4 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     public void onConnectionFailed(@NonNull @NotNull ConnectionResult connectionResult) {
 
     }
-
-
 }
