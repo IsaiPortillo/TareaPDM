@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.hotelreservationapp.adapter.RecentsAdapter;
 import com.example.hotelreservationapp.adapter.TopRoomsAdapter;
@@ -61,6 +62,10 @@ public class MainActivity extends AppCompatActivity {
         topRoomsRecycle.setLayoutManager(layoutManager);
         topRoomsAdapter = new TopRoomsAdapter(this, topRoomsDataList);
         topRoomsRecycle.setAdapter(topRoomsAdapter);
+
+    }
+
+    public void Login(View view){
 
     }
 

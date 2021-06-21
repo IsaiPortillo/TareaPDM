@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">HotelReservationApp</string>
-</resources>
+    <string name="IB">Perfil</string>
+    </resources>
