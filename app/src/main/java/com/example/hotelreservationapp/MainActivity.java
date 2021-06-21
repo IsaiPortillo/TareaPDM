@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void Login(View view){
+    public void login(View view){
 
     }
 
