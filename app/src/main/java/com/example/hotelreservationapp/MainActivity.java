@@ -8,15 +8,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 
 import com.example.hotelreservationapp.adapter.RecentsAdapter;
+import com.example.hotelreservationapp.adapter.TopRoomsAdapter;
 import com.example.hotelreservationapp.model.RecentsData;
+import com.example.hotelreservationapp.model.TopRoomsData;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    RecyclerView recentRecycle;
+    RecyclerView recentRecycle, topRoomsRecycle;
     RecentsAdapter recentsAdapter;
+    TopRoomsAdapter topRoomsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +34,15 @@ public class MainActivity extends AppCompatActivity {
 
         setRecentRecycle(recentsDataList);
 
+        List<TopRoomsData> topRoomsDataList = new ArrayList<>();
+        topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
+        topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
+        topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
+        topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
+        topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
+        topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
 
+        setTopRoomsRecycle(topRoomsDataList);
     }
 
     private void setRecentRecycle(List<RecentsData> recentsDataList){
@@ -41,6 +52,15 @@ public class MainActivity extends AppCompatActivity {
         recentRecycle.setLayoutManager(layoutManager);
         recentsAdapter = new RecentsAdapter(this, recentsDataList);
         recentRecycle.setAdapter(recentsAdapter);
+
+    }
+    private void setTopRoomsRecycle(List<TopRoomsData> topRoomsDataList){
+
+        topRoomsRecycle = findViewById(R.id.top_room_recycle);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this,RecyclerView.VERTICAL, false);
+        topRoomsRecycle.setLayoutManager(layoutManager);
+        topRoomsAdapter = new TopRoomsAdapter(this, topRoomsDataList);
+        topRoomsRecycle.setAdapter(topRoomsAdapter);
 
     }
 
