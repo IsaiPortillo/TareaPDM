@@ -17,13 +17,14 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/userTextView"
+            android:inputType="text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             android:fontFamily="@font/rubik"
-            android:text="Find Your"
+            android:text="Guest"
             android:textColor="#FFFFFFFF"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -35,11 +36,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/rubik_medium"
-            android:text="Next Bedrooms"
+            android:text="Find Your Next Bedrooms"
             android:textColor="#FFFFFFFF"
             android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="@+id/textView"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            app:layout_constraintStart_toStartOf="@+id/userTextView"
+            app:layout_constraintTop_toBottomOf="@+id/userTextView" />
 
         <ImageView
             android:id="@+id/imageView"
@@ -50,7 +51,19 @@
             android:contentDescription="@string/IB"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+
             app:srcCompat="@drawable/profile" />
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/signInButton"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            tools:layout_editor_absoluteX="233dp"
+            tools:layout_editor_absoluteY="31dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/editTextTextPersonName"
@@ -62,9 +75,9 @@
             android:drawablePadding="16dp"
             android:ems="10"
             android:fontFamily="@font/rubik_light"
+            android:hint="Find Bedrooms"
             android:inputType="textPersonName"
             android:paddingStart="16dp"
-            android:text="Find Bedrooms"
             android:textColor="#62878F"
             app:layout_constraintEnd_toEndOf="@+id/imageView"
             app:layout_constraintStart_toStartOf="@+id/textView2"
