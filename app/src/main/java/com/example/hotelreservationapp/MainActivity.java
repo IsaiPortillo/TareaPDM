@@ -10,7 +10,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.hotelreservationapp.adapter.RecentsAdapter;
 import com.example.hotelreservationapp.adapter.TopRoomsAdapter;
@@ -32,6 +35,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -41,6 +45,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
 
     TextView userName;
+    ImageView userImage;
     RecyclerView recentRecycle, topRoomsRecycle;
     RecentsAdapter recentsAdapter;
     TopRoomsAdapter topRoomsAdapter;
@@ -72,6 +77,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         signInButton.setOnClickListener(this);
 
         userName = (TextView) findViewById(R.id.userTextView);
+        userImage = (ImageView) findViewById(R.id.imageView);
+
+        View.OnClickListener clickListener = v -> {
+            if (v.equals(userImage)) {
+                FirebaseAuth.getInstance().signOut();
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+                updateUI(currentUser);
+            }
+        };
+        userImage.setOnClickListener(clickListener);
 
         List<RecentsData> recentsDataList = new ArrayList<>();
         recentsDataList.add(new RecentsData("Underwater Bedroom","BR1","$120", R.drawable.habitacion1));
@@ -90,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
 
         setTopRoomsRecycle(topRoomsDataList);
+
     }
 
     private void setRecentRecycle(List<RecentsData> recentsDataList){
@@ -176,6 +192,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private void updateUI(FirebaseUser currentUser) {
         if(currentUser != null){
             userName.setText("Bienvenido: " + currentUser.getDisplayName());
+            Picasso.get().load(currentUser.getPhotoUrl()).into(userImage);
+        }else{
+            userName.setText("Guest");
+            userImage.setImageResource(R.drawable.profile);
         }
     }
 
@@ -183,6 +203,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     public void onConnectionFailed(@NonNull @NotNull ConnectionResult connectionResult) {
 
     }
-
-
 }
+
+
