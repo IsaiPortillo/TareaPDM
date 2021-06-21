@@ -12,9 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.hotelreservationapp.adapter.RecentsAdapter;
 import com.example.hotelreservationapp.adapter.TopRoomsAdapter;
 import com.example.hotelreservationapp.model.RecentsData;
@@ -105,7 +103,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
 
         setTopRoomsRecycle(topRoomsDataList);
-
     }
 
     private void setRecentRecycle(List<RecentsData> recentsDataList){
@@ -124,6 +121,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         topRoomsRecycle.setLayoutManager(layoutManager);
         topRoomsAdapter = new TopRoomsAdapter(this, topRoomsDataList);
         topRoomsRecycle.setAdapter(topRoomsAdapter);
+
+    }
+
+    public void login(View view){
 
     }
 
@@ -204,5 +205,3 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     }
 }
-
-
