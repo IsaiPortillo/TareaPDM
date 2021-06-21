@@ -108,7 +108,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         topRoomsRecycle.setLayoutManager(layoutManager);
         topRoomsAdapter = new TopRoomsAdapter(this, topRoomsDataList);
         topRoomsRecycle.setAdapter(topRoomsAdapter);
-
     }
 
     @Override
