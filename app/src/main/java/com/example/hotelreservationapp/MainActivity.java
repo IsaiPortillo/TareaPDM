@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.example.hotelreservationapp.adapter.RecentsAdapter;
 import com.example.hotelreservationapp.adapter.TopRoomsAdapter;
