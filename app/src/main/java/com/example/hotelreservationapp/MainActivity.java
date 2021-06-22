@@ -3,21 +3,18 @@ package com.example.hotelreservationapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.hotelreservationapp.adapter.RecentsAdapter;
 import com.example.hotelreservationapp.adapter.TopRoomsAdapter;
-import com.example.hotelreservationapp.model.RecentsData;
+import com.example.hotelreservationapp.model.Habitacion;
 import com.example.hotelreservationapp.model.TopRoomsData;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -27,7 +24,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.signin.internal.SignInClientImpl;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -87,16 +83,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         };
         userImage.setOnClickListener(clickListener);
 
-        List<RecentsData> recentsDataList = new ArrayList<>();
-        recentsDataList.add(new RecentsData("1","Underwater Bedroom","BR1","$120", R.drawable.habitacion1));
-        recentsDataList.add(new RecentsData("2","Besto Bedroom","BR2","$300", R.drawable.habitacion2));
-        recentsDataList.add(new RecentsData("3","Underwater Bedroom","BR3","$125", R.drawable.habitacion1));
-        recentsDataList.add(new RecentsData("4","Besto Bedroom 2","BR4","$400", R.drawable.habitacion2));
+        List<Habitacion> habitacionList = new ArrayList<>();
+        habitacionList.add(new Habitacion("1","Underwater Bedroom","Double",1,120.0,"Really good looking hotel room",1,"t","https://media.cntraveler.com/photos/56799015c2ebbef23e7d927b/master/pass/Hotelroom-Alamy.jpg"));
+        habitacionList.add(new Habitacion("2","Besto Bedroom","Single",2,300.00,"Really good looking hotel room",5,"f","https://insights.ehotelier.com/wp-content/uploads/sites/6/2020/01/hotel-room-300x300.jpg"));
+        habitacionList.add(new Habitacion("3","Underwater Bedroom","Party",3,125.00,"Really good looking hotel room",2,"t","https://static.seattletimes.com/wp-content/uploads/2019/01/01282019_hotel-upgrade_112654-780x501.jpg"));
+        habitacionList.add(new Habitacion("4","Besto Bedroom 2","Single",4,400.00,"Really good looking hotel room",4,"f","https://miro.medium.com/max/8576/1*p1zBnv11CSx_EII8sB9Uaw.jpeg"));
 
         data = (GlobalData) getApplicationContext();
-        data.setDatos(recentsDataList);
+        data.setDatos(habitacionList);
 
-        setRecentRecycle(recentsDataList);
+        setRecentRecycle(habitacionList);
 
         List<TopRoomsData> topRoomsDataList = new ArrayList<>();
         topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
@@ -109,12 +105,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         setTopRoomsRecycle(topRoomsDataList);
     }
 
-    private void setRecentRecycle(List<RecentsData> recentsDataList){
+    private void setRecentRecycle(List<Habitacion> habitacionList){
 
         recentRecycle = findViewById(R.id.recent_recycle);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL, false);
         recentRecycle.setLayoutManager(layoutManager);
-        recentsAdapter = new RecentsAdapter(this, recentsDataList);
+        recentsAdapter = new RecentsAdapter(this, habitacionList);
 
         recentRecycle.setAdapter(recentsAdapter);
 
