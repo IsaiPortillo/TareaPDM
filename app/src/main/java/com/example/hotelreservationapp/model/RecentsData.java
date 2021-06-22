@@ -1,13 +1,19 @@
 package com.example.hotelreservationapp.model;
+import android.app.Application;
 
-public class RecentsData {
+import java.util.List;
+
+public class RecentsData{
     String id;
     String bedroomName;
     String bedroomNumber;
     String price;
     Integer imageUrl;
 
+
+
     public RecentsData(String id, String bedroomName, String bedroomNumber, String price, Integer imageUrl) {
+        this.id = id;
         this.bedroomName = bedroomName;
         this.bedroomNumber = bedroomNumber;
         this.price = price;
@@ -49,4 +55,5 @@ public class RecentsData {
     public String getId() {return id;}
 
     public void setId(String id) {this.id = id;}
+
 }
