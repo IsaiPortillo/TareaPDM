@@ -90,28 +90,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         };
         userImage.setOnClickListener(clickListener);
 
-        List<Habitacion> habitacionList = new ArrayList<>();
-        habitacionList.add(new Habitacion("1","Underwater Bedroom","Double",1,120.0,"Really good looking hotel room",1,"t","https://media.cntraveler.com/photos/56799015c2ebbef23e7d927b/master/pass/Hotelroom-Alamy.jpg"));
-        habitacionList.add(new Habitacion("2","Besto Bedroom","Single",2,300.00,"Really good looking hotel room",5,"f","https://insights.ehotelier.com/wp-content/uploads/sites/6/2020/01/hotel-room-300x300.jpg"));
-        habitacionList.add(new Habitacion("3","Underwater Bedroom","Party",3,125.00,"Really good looking hotel room",2,"t","https://static.seattletimes.com/wp-content/uploads/2019/01/01282019_hotel-upgrade_112654-780x501.jpg"));
-        habitacionList.add(new Habitacion("4","Besto Bedroom 2","Single",4,400.00,"Really good looking hotel room",4,"f","https://miro.medium.com/max/8576/1*p1zBnv11CSx_EII8sB9Uaw.jpeg"));
-
-        data = (GlobalData) getApplicationContext();
-        data.setDatos(habitacionList);
-
-        setRecentRecycle(habitacionList);
-
         //AQUI CARGAMOS EL LISTVIEW DE EL APARTADO TOPROOMS
         getHabitaciones();
-//        List<TopRoomsData> topRoomsDataList = new ArrayList<>();
-//        topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
-//        topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
-//        topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
-//        topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
-//        topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
-//        topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
-
-        //setTopRoomsRecycle(topRoomsDataList);
     }
 
     private void setRecentRecycle(List<Habitacion> habitacionList){
@@ -217,7 +197,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     public void getHabitaciones(){
-        List<TopRoomsData> topRoomsDataList = new ArrayList<>();
+        List<Habitacion> habitaciones = new ArrayList<>();
         mDataBase.child("Habitacion").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
@@ -231,9 +211,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                         String precio = habitacion.child("precio").getValue().toString();
                         String tipoHabitacion = habitacion.child("tipoHabitacion").getValue().toString();
                         String urlImagen = habitacion.child("urlImagen").getValue().toString();
-                        topRoomsDataList.add(new TopRoomsData(nombreHabitacion,numeroHabitacion,"$"+precio,R.drawable.habitacion1));
+                        habitaciones.add(new Habitacion(nombreHabitacion, tipoHabitacion, Integer.parseInt(numeroHabitacion), Double.parseDouble(precio), caracteristicas, Integer.parseInt(numeroPiso), disponibilidad, urlImagen));
                     }
-                    setTopRoomsRecycle(topRoomsDataList);
+                    data = (GlobalData) getApplicationContext();
+                    data.setDatos(habitaciones);
+                    setRecentRecycle(habitaciones);
                 }
             }
 

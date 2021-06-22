@@ -2,29 +2,19 @@ package com.example.hotelreservationapp.model;
 
 public class Reservacion {
 
-    String reservacionId;
     String clientName;
     String signInHour;
     String signtOutHour;
     String Guestsquantity;
     String bedroomName;
 
-    public Reservacion(String reservacionId, String clientName, String signInHour, String signtOutHour,
+    public Reservacion(String clientName, String signInHour, String signtOutHour,
                        String guestsquantity, String bedroomName) {
-        this.reservacionId = reservacionId;
         this.clientName = clientName;
         this.signInHour = signInHour;
         this.signtOutHour = signtOutHour;
         Guestsquantity = guestsquantity;
         this.bedroomName = bedroomName;
-    }
-
-    public String getReservacionId() {
-        return reservacionId;
-    }
-
-    public void setReservacionId(String reservacionId) {
-        this.reservacionId = reservacionId;
     }
 
     public String getClientName() {

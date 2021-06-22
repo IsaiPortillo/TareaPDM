@@ -4,7 +4,6 @@ import android.app.Application;
 import java.util.List;
 
 public class Habitacion {
-    String id;
     String bedroomName;
     String bedroomClass;
     int bedroomNumber;
@@ -14,9 +13,8 @@ public class Habitacion {
     String availability;
     String imageUrl;
 
-    public Habitacion(String id, String bedroomName, String bedroomClass, int bedroomNumber, double price,
+    public Habitacion(String bedroomName, String bedroomClass, int bedroomNumber, double price,
                       String characteristics, int floorNumber, String availability, String imageUrl) {
-        this.id = id;
         this.bedroomName = bedroomName;
         this.bedroomClass = bedroomClass;
         this.bedroomNumber = bedroomNumber;
@@ -26,15 +24,6 @@ public class Habitacion {
         this.availability = availability;
         this.imageUrl = imageUrl;
     }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getBedroomName() {
         return bedroomName;
     }
