@@ -35,6 +35,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
@@ -52,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     TopRoomsAdapter topRoomsAdapter;
     SignInButton signInButton;
     GoogleSignInClient mGoogleSignInClient;
+    DatabaseReference mDataBase;
 
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
@@ -62,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mDataBase = FirebaseDatabase.getInstance().getReference();
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -98,15 +105,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         setRecentRecycle(recentsDataList);
 
-        List<TopRoomsData> topRoomsDataList = new ArrayList<>();
-        topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
-        topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
-        topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
-        topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
-        topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
-        topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
+        //AQUI CARGAMOS EL LISTVIEW DE EL APARTADO TOPROOMS
+        getHabitaciones();
+//        List<TopRoomsData> topRoomsDataList = new ArrayList<>();
+//        topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
+//        topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
+//        topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
+//        topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
+//        topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
+//        topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
 
-        setTopRoomsRecycle(topRoomsDataList);
+        //setTopRoomsRecycle(topRoomsDataList);
     }
 
     private void setRecentRecycle(List<RecentsData> recentsDataList){
@@ -209,5 +218,33 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     public void onConnectionFailed(@NonNull @NotNull ConnectionResult connectionResult) {
 
+    }
+
+    public void getHabitaciones(){
+        List<TopRoomsData> topRoomsDataList = new ArrayList<>();
+        mDataBase.child("Habitacion").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    for(DataSnapshot habitacion: snapshot.getChildren()){
+                        String caracteristicas = habitacion.child("caracteristicas").getValue().toString();
+                        String disponibilidad = habitacion.child("disponibilidad").getValue().toString();
+                        String nombreHabitacion = habitacion.child("nombreHabitacion").getValue().toString();
+                        String numeroHabitacion = habitacion.child("numeroHabitacion").getValue().toString();
+                        String numeroPiso = habitacion.child("numeroPiso").getValue().toString();
+                        String precio = habitacion.child("precio").getValue().toString();
+                        String tipoHabitacion = habitacion.child("tipoHabitacion").getValue().toString();
+                        String urlImagen = habitacion.child("urlImagen").getValue().toString();
+                        topRoomsDataList.add(new TopRoomsData(nombreHabitacion,numeroHabitacion,"$"+precio,R.drawable.habitacion1));
+                    }
+                    setTopRoomsRecycle(topRoomsDataList);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
     }
 }
