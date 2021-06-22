@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hotelreservationapp.DetailsActivity;
+import com.example.hotelreservationapp.GlobalData;
 import com.example.hotelreservationapp.R;
 import com.example.hotelreservationapp.model.RecentsData;
 
@@ -23,7 +24,7 @@ public class RecentsAdapter extends RecyclerView.Adapter<RecentsAdapter.RecentsV
 
     Context context;
     List<RecentsData> recentsDataList;
-
+    GlobalData data;
     public RecentsAdapter(Context context, List<RecentsData> recentsDataList) {
         this.context = context;
         this.recentsDataList = recentsDataList;
@@ -44,12 +45,15 @@ public class RecentsAdapter extends RecyclerView.Adapter<RecentsAdapter.RecentsV
         holder.price.setText(recentsDataList.get(position).getPrice());
         holder.placeImage.setImageResource(recentsDataList.get(position).getImageUrl());
 
-        holder.itemView.setOnClickListener(new View.OnClickListener(){
+        data = (GlobalData) context.getApplicationContext();
 
+        holder.itemView.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, DetailsActivity.class);
+                if(holder.getAdapterPosition() != -1)
+                    data.setIdSeleccionado(holder.getAdapterPosition());
                 context.startActivity(i);
             }
         });

@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.hotelreservationapp.adapter.RecentsAdapter;
 import com.example.hotelreservationapp.adapter.TopRoomsAdapter;
 import com.example.hotelreservationapp.model.RecentsData;
@@ -43,6 +44,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
 
+    GlobalData data;
     TextView userName;
     ImageView userImage;
     RecyclerView recentRecycle, topRoomsRecycle;
@@ -91,6 +93,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         recentsDataList.add(new RecentsData("3","Underwater Bedroom","BR3","$125", R.drawable.habitacion1));
         recentsDataList.add(new RecentsData("4","Besto Bedroom 2","BR4","$400", R.drawable.habitacion2));
 
+        data = (GlobalData) getApplicationContext();
+        data.setDatos(recentsDataList);
+
         setRecentRecycle(recentsDataList);
 
         List<TopRoomsData> topRoomsDataList = new ArrayList<>();
@@ -110,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL, false);
         recentRecycle.setLayoutManager(layoutManager);
         recentsAdapter = new RecentsAdapter(this, recentsDataList);
+
         recentRecycle.setAdapter(recentsAdapter);
 
     }
