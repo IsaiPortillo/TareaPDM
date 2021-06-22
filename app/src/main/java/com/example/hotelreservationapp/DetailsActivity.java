@@ -7,13 +7,16 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.hotelreservationapp.model.Habitacion;
 import com.example.hotelreservationapp.model.Reservacion;
@@ -28,8 +31,8 @@ public class DetailsActivity extends AppCompatActivity {
     public FirebaseDatabase dataFire;
     public DatabaseReference mData;
     public TextView txtnombreCuarto, txtnumeroCuarto, txtprecio, txttipoHabitacion, txtDescripcion, txtDisponibilidad;
-    public EditText txtnumeroPersonas;
-    public DatePicker txtfechaReserva, txtfechaSalida;
+    public EditText txtnumeroPersonas, fechaReserva, fechaSalida;
+    public DatePickerDialog picker;
     public ImageView ivimagenUrl;
     public Button btnenviar;
 
@@ -59,10 +62,13 @@ public class DetailsActivity extends AppCompatActivity {
         txtDescripcion =  (TextView) findViewById(R.id.informacion);
         txtDisponibilidad = (TextView) findViewById(R.id.disponiblilidad);
         txtnumeroPersonas = (EditText) findViewById(R.id.numeroPersonas);
+        fechaReserva = (EditText) findViewById(R.id.fechaEntrada);
+        fechaReserva.setInputType(InputType.TYPE_NULL);
+        fechaSalida = (EditText) findViewById(R.id.fechaSalida);
+        fechaSalida.setInputType(InputType.TYPE_NULL);
         ivimagenUrl = (ImageView) findViewById(R.id.imgUrl);
         btnenviar = (Button) findViewById(R.id.buttonInsertar);
         mData = dataFire.getInstance().getReference();
-
 
         data = (GlobalData) getApplicationContext();
         List<Habitacion> datos = data.getDatos();
@@ -85,19 +91,53 @@ public class DetailsActivity extends AppCompatActivity {
         txtDescripcion.setText(caracteristicas);
         txtDisponibilidad.setText(disponibilidad);
         Picasso.get().load(url).into(ivimagenUrl);
+
+        fechaReserva.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar cldr = Calendar.getInstance();
+                int day = cldr.get(Calendar.DAY_OF_MONTH);
+                int month = cldr.get(Calendar.MONTH);
+                int year = cldr.get(Calendar.YEAR);
+                //datepicker dialog
+                picker = new DatePickerDialog(DetailsActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                fechaReserva.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                            }
+                        }, year, month, day);
+                picker.show();
+            }
+        });
+        fechaSalida.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar cldr = Calendar.getInstance();
+                int day = cldr.get(Calendar.DAY_OF_MONTH);
+                int month = cldr.get(Calendar.MONTH);
+                int year = cldr.get(Calendar.YEAR);
+                //datepicker dialog
+                picker = new DatePickerDialog(DetailsActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                fechaSalida.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                            }
+                        }, year, month, day);
+                picker.show();
+            }
+        });
     }
 
     public void agregarReserva(){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        //String dateEntrada = sdf.format(txtfechaReserva);
-        //String dateSalida = sdf.format(txtfechaSalida);
-
-        Reservacion r = new Reservacion(nombreCliente,"12-11-2023", "12-12-2023", txtnumeroPersonas.getText().toString(),txtnombreCuarto.getText().toString());
-        //Reservacion aux = new Reservacion("1", "nombre","12-11-2023", "12-12-2023", "2", "cuarto");
+        Reservacion r = new Reservacion(nombreCliente,fechaReserva.getText().toString(), fechaSalida.getText().toString(), txtnumeroPersonas.getText().toString(),txtnombreCuarto.getText().toString());
         mData.child("Reservaciones").push().setValue(r);
     }
 
     public void enviar(View view) {
         agregarReserva();
+        Toast.makeText(data, "Habitacion reservada exitosamente!", Toast.LENGTH_LONG).show();
+        super.onBackPressed();
     }
 }

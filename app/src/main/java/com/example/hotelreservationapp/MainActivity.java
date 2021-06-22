@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -44,7 +45,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
+public class MainActivity extends AppCompatActivity{
 
     GlobalData data;
     TextView userName;
@@ -52,14 +53,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     RecyclerView recentRecycle, topRoomsRecycle;
     RecentsAdapter recentsAdapter;
     TopRoomsAdapter topRoomsAdapter;
-    Button logoutBTN;
-    SignInButton signInButton;
-    GoogleSignInClient mGoogleSignInClient;
+    public Dialog popUp;
     DatabaseReference mDataBase;
-
-    private static final String TAG = "SignInActivity";
-    private static final int RC_SIGN_IN = 9001;
-
     private FirebaseAuth mAuth;
 
     @Override
@@ -67,42 +62,59 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mDataBase = FirebaseDatabase.getInstance().getReference();
-        //desde aqui es la parte de isai
-        logoutBTN = (Button)findViewById(R.id.buttonLogOut);
-
         mAuth = FirebaseAuth.getInstance();
-
-        logoutBTN.setOnClickListener(view-> {
-            mAuth.signOut();
-            startActivity(new Intent(MainActivity.this,LoginActivity.class));
-        });
-        //hasta aqui
-
-        // Configure Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        // ...
-        // Initialize Firebase Auth
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-        signInButton = (SignInButton) findViewById(R.id.signInButton);
-        signInButton.setOnClickListener(this);
+        FirebaseUser user = mAuth.getCurrentUser();
 
         userName = (TextView) findViewById(R.id.userTextView);
         userImage = (ImageView) findViewById(R.id.IB);
 
-        View.OnClickListener clickListener = v -> {
-            if (v.equals(userImage)) {
-                logout();
+        updateUI(user);
+
+        popUp = new Dialog(this);
+        userImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popUp.setContentView(R.layout.pop_up);
+                ImageView img = (ImageView)popUp.findViewById(R.id.imageUserPop);
+                TextView userEmail = (TextView)popUp.findViewById(R.id.userEmail);
+                Button btnCerrar = (Button) popUp.findViewById(R.id.buttonPop);
+
+                if(user != null){
+                    userEmail.setText(user.getDisplayName());
+                    Picasso.get().load(user.getPhotoUrl()).into(img);
+                }else{
+                    userEmail.setText("Inicia sesion para Reservar");
+                    img.setImageResource(R.drawable.profile);
+                    btnCerrar.setText("Iniciar Sesion");
+                }
+
+                popUp.show();
+                btnCerrar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(user != null){
+                            logout();
+                            updateUI(user);
+                            startActivity(new Intent(MainActivity.this,LoginActivity.class));
+                        }else{
+                            startActivity(new Intent(MainActivity.this,LoginActivity.class));
+                        }
+                    }
+                });
             }
-        };
-        userImage.setOnClickListener(clickListener);
+        });
+
 
         //AQUI CARGAMOS EL LISTVIEW DE EL APARTADO TOPROOMS
         getHabitaciones();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        updateUI(user);
     }
 
     private void setRecentRecycle(List<Habitacion> habitacionList){
@@ -111,103 +123,27 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL, false);
         recentRecycle.setLayoutManager(layoutManager);
         recentsAdapter = new RecentsAdapter(this, habitacionList);
-
         recentRecycle.setAdapter(recentsAdapter);
 
     }
-    private void setTopRoomsRecycle(List<TopRoomsData> topRoomsDataList){
-
-        topRoomsRecycle = findViewById(R.id.top_room_recycle);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this,RecyclerView.VERTICAL, false);
-        topRoomsRecycle.setLayoutManager(layoutManager);
-        topRoomsAdapter = new TopRoomsAdapter(this, topRoomsDataList);
-        topRoomsRecycle.setAdapter(topRoomsAdapter);
-    }
-
-    public void logout(){
-        FirebaseAuth.getInstance().signOut();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.signInButton:
-                signIn();
-                break;
-        }
-    }
-
-    private void signIn() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
-                firebaseAuthWithGoogle(account.getIdToken());
-            } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed", e);
-            }
-        }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
-        if(currentUser==null){
-            startActivity(new Intent(MainActivity.this,LoginActivity.class));
-        }
-    }
-
-    private void firebaseAuthWithGoogle(String idToken) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            updateUI(null);
-                        }
-                    }
-                });
-    }
-
 
     private void updateUI(FirebaseUser currentUser) {
         if(currentUser != null){
             userName.setText("Bienvenido: " + currentUser.getDisplayName());
             Picasso.get().load(currentUser.getPhotoUrl()).into(userImage);
         }else{
-            userName.setText("Guest");
+            userName.setText("Invitado");
             userImage.setImageResource(R.drawable.profile);
         }
     }
 
-    @Override
-    public void onConnectionFailed(@NonNull @NotNull ConnectionResult connectionResult) {
+    private void setTopRoomsRecycle(List<Habitacion> habitacionList){
 
+        topRoomsRecycle = findViewById(R.id.top_room_recycle);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this,RecyclerView.VERTICAL, false);
+        topRoomsRecycle.setLayoutManager(layoutManager);
+        topRoomsAdapter = new TopRoomsAdapter(this, habitacionList);
+        topRoomsRecycle.setAdapter(topRoomsAdapter);
     }
 
     public void getHabitaciones(){
@@ -230,13 +166,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     data = (GlobalData) getApplicationContext();
                     data.setDatos(habitaciones);
                     setRecentRecycle(habitaciones);
+                    setTopRoomsRecycle(habitaciones);
                 }
             }
-
             @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError error) {
-
-            }
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {}
         });
+    }
+
+    public void logout(){
+        FirebaseAuth.getInstance().signOut();
     }
 }
