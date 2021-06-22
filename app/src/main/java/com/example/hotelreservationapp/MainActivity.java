@@ -3,17 +3,16 @@ package com.example.hotelreservationapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import com.example.hotelreservationapp.adapter.RecentsAdapter;
 import com.example.hotelreservationapp.adapter.TopRoomsAdapter;
 import com.example.hotelreservationapp.model.RecentsData;
@@ -26,7 +25,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.signin.internal.SignInClientImpl;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -48,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     RecyclerView recentRecycle, topRoomsRecycle;
     RecentsAdapter recentsAdapter;
     TopRoomsAdapter topRoomsAdapter;
+    Button logBTN;
     SignInButton signInButton;
     GoogleSignInClient mGoogleSignInClient;
 
@@ -60,6 +59,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        logBTN = (Button)findViewById(R.id.buttonLogin);
+        logBTN.setOnClickListener(v -> {
+            Intent logBTN = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(logBTN);
+        });
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -76,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         signInButton.setOnClickListener(this);
 
         userName = (TextView) findViewById(R.id.userTextView);
-        userImage = (ImageView) findViewById(R.id.imageView);
+        userImage = (ImageView) findViewById(R.id.IB);
 
         View.OnClickListener clickListener = v -> {
             if (v.equals(userImage)) {
