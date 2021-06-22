@@ -93,7 +93,6 @@ public class DetailsActivity extends AppCompatActivity {
         //String dateSalida = sdf.format(txtfechaSalida);
 
         Reservacion r = new Reservacion(nombreCliente,"12-11-2023", "12-12-2023", txtnumeroPersonas.getText().toString(),txtnombreCuarto.getText().toString());
-        //Reservacion aux = new Reservacion("1", "nombre","12-11-2023", "12-12-2023", "2", "cuarto");
         mData.child("Reservaciones").push().setValue(r);
     }
 
