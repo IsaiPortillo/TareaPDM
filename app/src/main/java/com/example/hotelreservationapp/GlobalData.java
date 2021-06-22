@@ -1,29 +1,30 @@
 package com.example.hotelreservationapp;
 
 import android.app.Application;
-import com.example.hotelreservationapp.model.RecentsData;
-import com.google.firebase.auth.FirebaseUser;
+
+import com.example.hotelreservationapp.model.Cliente;
+import com.example.hotelreservationapp.model.Habitacion;
 
 import java.util.List;
 
 public class GlobalData extends Application {
-    List<RecentsData> datos;
+    List<Habitacion> datos;
     int idSeleccionado;
-    FirebaseUser currentUser;
+    Cliente currentUser;
 
     public GlobalData(){
 
     }
 
-    public List<RecentsData> getDatos() {return datos;}
+    public List<Habitacion> getDatos() {return datos;}
 
-    public void setDatos(List<RecentsData> datos) {this.datos = datos;}
+    public void setDatos(List<Habitacion> datos) {this.datos = datos;}
 
     public int getIdSeleccionado() {return idSeleccionado;}
 
     public void setIdSeleccionado(int idSeleccionado) {this.idSeleccionado = idSeleccionado;}
 
-    public FirebaseUser getCurrentUser() {return currentUser;}
+    public Cliente getCurrentUser() {return currentUser;}
 
-    public void setCurrentUser(FirebaseUser currentUser) {this.currentUser = currentUser;}
+    public void setCurrentUser(Cliente currentUser) {this.currentUser = currentUser;}
 }
