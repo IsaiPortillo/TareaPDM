@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     RecyclerView recentRecycle, topRoomsRecycle;
     RecentsAdapter recentsAdapter;
     TopRoomsAdapter topRoomsAdapter;
-    Button logBTN;
+    Button logoutBTN;
     SignInButton signInButton;
     GoogleSignInClient mGoogleSignInClient;
     DatabaseReference mDataBase;
@@ -67,12 +67,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mDataBase = FirebaseDatabase.getInstance().getReference();
+        //desde aqui es la parte de isai
+        logoutBTN = (Button)findViewById(R.id.buttonLogOut);
 
-        logBTN = (Button)findViewById(R.id.buttonLogin);
-        logBTN.setOnClickListener(v -> {
-            Intent logBTN = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(logBTN);
+        mAuth = FirebaseAuth.getInstance();
+
+        logoutBTN.setOnClickListener(view-> {
+            mAuth.signOut();
+            startActivity(new Intent(MainActivity.this,LoginActivity.class));
         });
+        //hasta aqui
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -81,7 +85,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .build();
         // ...
         // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
@@ -166,6 +169,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
+        if(currentUser==null){
+            startActivity(new Intent(MainActivity.this,LoginActivity.class));
+        }
     }
 
     private void firebaseAuthWithGoogle(String idToken) {

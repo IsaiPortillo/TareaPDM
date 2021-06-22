@@ -39,7 +39,7 @@
         app:srcCompat="@drawable/drawer" />
 
     <EditText
-        android:id="@+id/editTextTextPassword"
+        android:id="@+id/etLoginPass"
         android:layout_width="350dp"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
@@ -48,6 +48,7 @@
         android:textColor="#200A4D"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.473"
         app:layout_constraintStart_toStartOf="@+id/textView11"
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
@@ -70,7 +71,7 @@
         android:text="Password"
         android:textColor="#200A4D"
         app:layout_constraintStart_toStartOf="@+id/textView6"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress2" />
+        app:layout_constraintTop_toBottomOf="@+id/etLogEmail" />
 
     <TextView
         android:id="@+id/textView12"
@@ -86,7 +87,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <EditText
-        android:id="@+id/editTextTextEmailAddress2"
+        android:id="@+id/etLogEmail"
         android:layout_width="350dp"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
@@ -98,7 +99,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/buttonSendLogin"
         android:layout_width="279dp"
         android:layout_height="48dp"
         android:layout_marginStart="8dp"
@@ -110,7 +111,7 @@
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/etLoginPass" />
 
     <TextView
         android:id="@+id/textView13"
@@ -121,7 +122,7 @@
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonSendLogin" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/signInButton"
@@ -148,6 +149,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
+        android:fontFamily="@font/roboto"
         android:text="Create Account"
         android:textColor="#4718AD"
         app:layout_constraintBottom_toBottomOf="@+id/textView14"
