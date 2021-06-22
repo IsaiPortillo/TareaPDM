@@ -9,12 +9,13 @@
     <ImageView
         android:id="@+id/imgUrl"
         android:layout_width="0dp"
-        android:layout_height="250dp"
+        android:layout_height="150dp"
         android:adjustViewBounds="true"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/image1" />
+        app:srcCompat="@drawable/habitacion1" />
 
     <TextView
         android:id="@+id/nombreHabitacion"
@@ -53,18 +54,18 @@
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:text="Precio:"
         android:textColor="#102D40"
         app:layout_constraintStart_toStartOf="@+id/textView8"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <TextView
-        android:id="@+id/textViewpersonas"
+        android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Numero de personas:"
+        android:layout_marginTop="16dp"
+        android:text="Tipo de habitacion:"
         android:textColor="#102D40"
         app:layout_constraintStart_toStartOf="@+id/textView9"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
@@ -74,7 +75,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="128dp"
         android:fontFamily="@font/roboto_medium"
         android:text="About"
         android:textColor="@color/black"
@@ -84,12 +85,12 @@
 
     <TextView
         android:id="@+id/informacion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_width="371dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="4dp"
         android:text="Informacion"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.265"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/textView10"
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
@@ -99,14 +100,14 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="432"
+        android:text="si"
         app:layout_constraintStart_toEndOf="@+id/textView7"
         app:layout_constraintTop_toBottomOf="@+id/nombreHabitacion" />
 
     <TextView
         android:id="@+id/numeroHabitacion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="43dp"
+        android:layout_height="18dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="12"
@@ -115,11 +116,11 @@
 
     <TextView
         android:id="@+id/precio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="5"
+        android:layout_width="66dp"
+        android:layout_height="21dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:text="50.50"
         app:layout_constraintStart_toEndOf="@+id/textView9"
         app:layout_constraintTop_toBottomOf="@+id/numeroHabitacion" />
 
@@ -127,36 +128,87 @@
         android:id="@+id/buttonInsertar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="36dp"
         android:onClick="enviar"
-        android:text="Button"
+        android:text="Reservar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.724"
+        app:layout_constraintHorizontal_bias="0.776"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/informacion" />
+        app:layout_constraintTop_toBottomOf="@+id/imgUrl" />
 
     <EditText
         android:id="@+id/numeroPersonas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="64dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Name"
-        android:textSize="10sp"
+        android:textSize="8sp"
         app:layout_constraintStart_toEndOf="@+id/textViewpersonas"
         app:layout_constraintTop_toBottomOf="@+id/precio" />
 
     <TextView
-        android:id="@+id/id"
+        android:id="@+id/textViewpersonas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="12"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.597"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgUrl" />
+        android:layout_marginTop="60dp"
+        android:text="Numero de personas:"
+        android:textColor="#102D40"
+        app:layout_constraintStart_toStartOf="@+id/textView6"
+        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+    <TextView
+        android:id="@+id/textViewpersonas2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="112dp"
+        android:text="fecha de reserva:"
+        android:textColor="#102D40"
+        app:layout_constraintStart_toStartOf="@+id/textViewpersonas"
+        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+    <TextView
+        android:id="@+id/textViewpersonas3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="156dp"
+        android:text="fecha de salida:"
+        android:textColor="#102D40"
+        app:layout_constraintStart_toStartOf="@+id/textViewpersonas2"
+        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+    <TextView
+        android:id="@+id/tipoHabitacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="20dp"
+        android:text="TextView"
+        app:layout_constraintStart_toEndOf="@+id/textView6"
+        app:layout_constraintTop_toBottomOf="@+id/precio" />
+
+    <EditText
+        android:id="@+id/fechaEntrada"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:inputType="date"
+        android:textSize="8sp"
+        app:layout_constraintStart_toStartOf="@+id/numeroPersonas"
+        app:layout_constraintTop_toBottomOf="@+id/numeroPersonas" />
+
+    <EditText
+        android:id="@+id/fechaSalida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:inputType="date"
+        android:textSize="8sp"
+        app:layout_constraintStart_toStartOf="@+id/fechaEntrada"
+        app:layout_constraintTop_toBottomOf="@+id/fechaEntrada" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
