@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     RecyclerView recentRecycle, topRoomsRecycle;
     RecentsAdapter recentsAdapter;
     TopRoomsAdapter topRoomsAdapter;
+    Button logBTN;
     SignInButton signInButton;
     GoogleSignInClient mGoogleSignInClient;
     DatabaseReference mDataBase;
@@ -65,6 +67,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mDataBase = FirebaseDatabase.getInstance().getReference();
+
+        logBTN = (Button)findViewById(R.id.buttonLogin);
+        logBTN.setOnClickListener(v -> {
+            Intent logBTN = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(logBTN);
+        });
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -81,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         signInButton.setOnClickListener(this);
 
         userName = (TextView) findViewById(R.id.userTextView);
-        userImage = (ImageView) findViewById(R.id.imageView);
+        userImage = (ImageView) findViewById(R.id.IB);
 
         View.OnClickListener clickListener = v -> {
             if (v.equals(userImage)) {
@@ -90,11 +98,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         };
         userImage.setOnClickListener(clickListener);
 
-        List<Habitacion> habitacionList = new ArrayList<>();
-        habitacionList.add(new Habitacion("1","Underwater Bedroom","Double",1,120.0,"Really good looking hotel room",1,"t","https://media.cntraveler.com/photos/56799015c2ebbef23e7d927b/master/pass/Hotelroom-Alamy.jpg"));
-        habitacionList.add(new Habitacion("2","Besto Bedroom","Single",2,300.00,"Really good looking hotel room",5,"f","https://insights.ehotelier.com/wp-content/uploads/sites/6/2020/01/hotel-room-300x300.jpg"));
-        habitacionList.add(new Habitacion("3","Underwater Bedroom","Party",3,125.00,"Really good looking hotel room",2,"t","https://static.seattletimes.com/wp-content/uploads/2019/01/01282019_hotel-upgrade_112654-780x501.jpg"));
-        habitacionList.add(new Habitacion("4","Besto Bedroom 2","Single",4,400.00,"Really good looking hotel room",4,"f","https://miro.medium.com/max/8576/1*p1zBnv11CSx_EII8sB9Uaw.jpeg"));
+        List<RecentsData> recentsDataList = new ArrayList<>();
+        recentsDataList.add(new RecentsData("1","Underwater Bedroom","BR1","$120", R.drawable.habitacion1));
+        recentsDataList.add(new RecentsData("2","Besto Bedroom","BR2","$300", R.drawable.habitacion2));
+        recentsDataList.add(new RecentsData("3","Underwater Bedroom","BR3","$125", R.drawable.habitacion1));
+        recentsDataList.add(new RecentsData("4","Besto Bedroom 2","BR4","$400", R.drawable.habitacion2));
 
         data = (GlobalData) getApplicationContext();
         data.setDatos(habitacionList);
