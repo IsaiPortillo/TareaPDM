@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.example.hotelreservationapp.adapter.RecentsAdapter;
 import com.example.hotelreservationapp.adapter.TopRoomsAdapter;
-import com.example.hotelreservationapp.model.RecentsData;
+import com.example.hotelreservationapp.model.Habitacion;
 import com.example.hotelreservationapp.model.TopRoomsData;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -32,6 +32,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
@@ -41,6 +46,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
 
+    GlobalData data;
     TextView userName;
     ImageView userImage;
     RecyclerView recentRecycle, topRoomsRecycle;
@@ -49,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     Button logBTN;
     SignInButton signInButton;
     GoogleSignInClient mGoogleSignInClient;
+    DatabaseReference mDataBase;
 
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
@@ -59,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mDataBase = FirebaseDatabase.getInstance().getReference();
 
         logBTN = (Button)findViewById(R.id.buttonLogin);
         logBTN.setOnClickListener(v -> {
@@ -90,31 +98,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         };
         userImage.setOnClickListener(clickListener);
 
-        List<RecentsData> recentsDataList = new ArrayList<>();
-        recentsDataList.add(new RecentsData("1","Underwater Bedroom","BR1","$120", R.drawable.habitacion1));
-        recentsDataList.add(new RecentsData("2","Besto Bedroom","BR2","$300", R.drawable.habitacion2));
-        recentsDataList.add(new RecentsData("3","Underwater Bedroom","BR3","$125", R.drawable.habitacion1));
-        recentsDataList.add(new RecentsData("4","Besto Bedroom 2","BR4","$400", R.drawable.habitacion2));
-
-        setRecentRecycle(recentsDataList);
-
-        List<TopRoomsData> topRoomsDataList = new ArrayList<>();
-        topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
-        topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
-        topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
-        topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
-        topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
-        topRoomsDataList.add(new TopRoomsData("Underwater Bedroom","BR3","$123",R.drawable.habitacion1));
-
-        setTopRoomsRecycle(topRoomsDataList);
+        //AQUI CARGAMOS EL LISTVIEW DE EL APARTADO TOPROOMS
+        getHabitaciones();
     }
 
-    private void setRecentRecycle(List<RecentsData> recentsDataList){
+    private void setRecentRecycle(List<Habitacion> habitacionList){
 
         recentRecycle = findViewById(R.id.recent_recycle);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL, false);
         recentRecycle.setLayoutManager(layoutManager);
-        recentsAdapter = new RecentsAdapter(this, recentsDataList);
+        recentsAdapter = new RecentsAdapter(this, habitacionList);
+
         recentRecycle.setAdapter(recentsAdapter);
 
     }
@@ -125,7 +119,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         topRoomsRecycle.setLayoutManager(layoutManager);
         topRoomsAdapter = new TopRoomsAdapter(this, topRoomsDataList);
         topRoomsRecycle.setAdapter(topRoomsAdapter);
-
     }
 
     public void logout(){
@@ -209,5 +202,35 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     public void onConnectionFailed(@NonNull @NotNull ConnectionResult connectionResult) {
 
+    }
+
+    public void getHabitaciones(){
+        List<Habitacion> habitaciones = new ArrayList<>();
+        mDataBase.child("Habitacion").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    for(DataSnapshot habitacion: snapshot.getChildren()){
+                        String caracteristicas = habitacion.child("caracteristicas").getValue().toString();
+                        String disponibilidad = habitacion.child("disponibilidad").getValue().toString();
+                        String nombreHabitacion = habitacion.child("nombreHabitacion").getValue().toString();
+                        String numeroHabitacion = habitacion.child("numeroHabitacion").getValue().toString();
+                        String numeroPiso = habitacion.child("numeroPiso").getValue().toString();
+                        String precio = habitacion.child("precio").getValue().toString();
+                        String tipoHabitacion = habitacion.child("tipoHabitacion").getValue().toString();
+                        String urlImagen = habitacion.child("urlImagen").getValue().toString();
+                        habitaciones.add(new Habitacion(nombreHabitacion, tipoHabitacion, Integer.parseInt(numeroHabitacion), Double.parseDouble(precio), caracteristicas, Integer.parseInt(numeroPiso), disponibilidad, urlImagen));
+                    }
+                    data = (GlobalData) getApplicationContext();
+                    data.setDatos(habitaciones);
+                    setRecentRecycle(habitaciones);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
     }
 }
