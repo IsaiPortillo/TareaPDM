@@ -20,6 +20,8 @@ import android.widget.Toast;
 
 import com.example.hotelreservationapp.model.Habitacion;
 import com.example.hotelreservationapp.model.Reservacion;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -35,7 +37,7 @@ public class DetailsActivity extends AppCompatActivity {
     public DatePickerDialog picker;
     public ImageView ivimagenUrl;
     public Button btnenviar;
-
+    private FirebaseAuth mAuth;
 
     String nombreHabitacion;
     public String nombreCliente = "NombreCliente";
@@ -131,13 +133,19 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     public void agregarReserva(){
-        Reservacion r = new Reservacion(nombreCliente,fechaReserva.getText().toString(), fechaSalida.getText().toString(), txtnumeroPersonas.getText().toString(),txtnombreCuarto.getText().toString());
-        mData.child("Reservaciones").push().setValue(r);
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if(user != null){
+            Reservacion r = new Reservacion(user.getEmail(),fechaReserva.getText().toString(), fechaSalida.getText().toString(), txtnumeroPersonas.getText().toString(),txtnombreCuarto.getText().toString());
+            mData.child("Reservaciones").push().setValue(r);
+            Toast.makeText(data, "Habitacion reservada exitosamente!", Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(DetailsActivity.this, "Debe inciar sesion.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void enviar(View view) {
         agregarReserva();
-        Toast.makeText(data, "Habitacion reservada exitosamente!", Toast.LENGTH_LONG).show();
         super.onBackPressed();
     }
 }

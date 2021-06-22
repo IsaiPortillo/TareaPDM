@@ -74,17 +74,25 @@ public class MainActivity extends AppCompatActivity{
         userImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mAuth = FirebaseAuth.getInstance();
+                FirebaseUser user = mAuth.getCurrentUser();
+
                 popUp.setContentView(R.layout.pop_up);
                 ImageView img = (ImageView)popUp.findViewById(R.id.imageUserPop);
                 TextView userEmail = (TextView)popUp.findViewById(R.id.userEmail);
                 Button btnCerrar = (Button) popUp.findViewById(R.id.buttonPop);
 
                 if(user != null){
-                    userEmail.setText(user.getDisplayName());
-                    Picasso.get().load(user.getPhotoUrl()).into(img);
+                    userEmail.setText(user.getEmail());
+                    if(user.getPhotoUrl() != null){
+                        Picasso.get().load(user.getPhotoUrl()).into(img);
+                    }else{
+                        Picasso.get().load("https://uybor.uz/borless/uybor/img/user-images/user_no_photo_300x300.png").into(img);
+                    }
+
                 }else{
                     userEmail.setText("Inicia sesion para Reservar");
-                    img.setImageResource(R.drawable.profile);
+                    Picasso.get().load("https://png.pngitem.com/pimgs/s/130-1300400_user-hd-png-download.png").into(img);
                     btnCerrar.setText("Iniciar Sesion");
                 }
 
@@ -92,6 +100,9 @@ public class MainActivity extends AppCompatActivity{
                 btnCerrar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        mAuth = FirebaseAuth.getInstance();
+                        FirebaseUser user = mAuth.getCurrentUser();
+
                         if(user != null){
                             logout();
                             updateUI(user);
@@ -99,6 +110,7 @@ public class MainActivity extends AppCompatActivity{
                         }else{
                             startActivity(new Intent(MainActivity.this,LoginActivity.class));
                         }
+                        popUp.dismiss();
                     }
                 });
             }
@@ -129,11 +141,16 @@ public class MainActivity extends AppCompatActivity{
 
     private void updateUI(FirebaseUser currentUser) {
         if(currentUser != null){
-            userName.setText("Bienvenido: " + currentUser.getDisplayName());
-            Picasso.get().load(currentUser.getPhotoUrl()).into(userImage);
+            userName.setText("Bienvenido: " + currentUser.getEmail());
+            if(currentUser.getPhotoUrl() != null){
+                Picasso.get().load(currentUser.getPhotoUrl()).into(userImage);
+            }else{
+                Picasso.get().load("https://uybor.uz/borless/uybor/img/user-images/user_no_photo_300x300.png").into(userImage);
+            }
         }else{
             userName.setText("Invitado");
-            userImage.setImageResource(R.drawable.profile);
+            Picasso.get().load("https://png.pngitem.com/pimgs/s/130-1300400_user-hd-png-download.png").into(userImage);
+
         }
     }
 
