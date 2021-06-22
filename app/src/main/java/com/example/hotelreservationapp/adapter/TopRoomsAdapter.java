@@ -12,8 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hotelreservationapp.DetailsActivity;
+import com.example.hotelreservationapp.GlobalData;
 import com.example.hotelreservationapp.R;
+import com.example.hotelreservationapp.model.Habitacion;
 import com.example.hotelreservationapp.model.TopRoomsData;
+import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -22,11 +25,12 @@ import java.util.List;
 public class TopRoomsAdapter extends RecyclerView.Adapter<TopRoomsAdapter.TopRoomsViewHolder> {
 
     Context context;
-    List<TopRoomsData> TopRoomsDataList;
+    List<Habitacion> habitacionList;
+    GlobalData data;
 
-    public TopRoomsAdapter(Context context, List<TopRoomsData> recentsDataList) {
+    public TopRoomsAdapter(Context context, List<Habitacion> habitacionList) {
         this.context = context;
-        this.TopRoomsDataList = recentsDataList;
+        this.habitacionList = habitacionList;
     }
 
     @NonNull
@@ -39,17 +43,20 @@ public class TopRoomsAdapter extends RecyclerView.Adapter<TopRoomsAdapter.TopRoo
     @Override
     public void onBindViewHolder(@NonNull @NotNull TopRoomsAdapter.TopRoomsViewHolder holder, int position) {
 
-        holder.bedroomNumber.setText(TopRoomsDataList.get(position).getBedroomNumber());
-        holder.bedroomName.setText(TopRoomsDataList.get(position).getBedroomName());
-        holder.price.setText(TopRoomsDataList.get(position).getPrice());
-        holder.placeImage.setImageResource(TopRoomsDataList.get(position).getImageUrl());
+        holder.bedroomNumber.setText(Integer.toString(habitacionList.get(position).getBedroomNumber()));
+        holder.bedroomName.setText(habitacionList.get(position).getBedroomName());
+        holder.price.setText(Double.toString(habitacionList.get(position).getPrice()));
+        Picasso.get().load(habitacionList.get(position).getImageUrl()).into(holder.placeImage);
+
+        data = (GlobalData) context.getApplicationContext();
 
         holder.itemView.setOnClickListener(new View.OnClickListener(){
-
 
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, DetailsActivity.class);
+                if(holder.getAdapterPosition() != -1)
+                    data.setIdSeleccionado(holder.getAdapterPosition());
                 context.startActivity(i);
             }
         });
@@ -58,7 +65,7 @@ public class TopRoomsAdapter extends RecyclerView.Adapter<TopRoomsAdapter.TopRoo
 
     @Override
     public int getItemCount() {
-        return TopRoomsDataList.size();
+        return habitacionList.size();
     }
 
 
