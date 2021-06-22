@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     RecyclerView recentRecycle, topRoomsRecycle;
     RecentsAdapter recentsAdapter;
     TopRoomsAdapter topRoomsAdapter;
+    Button logBTN;
     SignInButton signInButton;
     GoogleSignInClient mGoogleSignInClient;
     DatabaseReference mDataBase;
@@ -65,6 +67,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mDataBase = FirebaseDatabase.getInstance().getReference();
+
+        logBTN = (Button)findViewById(R.id.buttonLogin);
+        logBTN.setOnClickListener(v -> {
+            Intent logBTN = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(logBTN);
+        });
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -81,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         signInButton.setOnClickListener(this);
 
         userName = (TextView) findViewById(R.id.userTextView);
-        userImage = (ImageView) findViewById(R.id.imageView);
+        userImage = (ImageView) findViewById(R.id.IB);
 
         View.OnClickListener clickListener = v -> {
             if (v.equals(userImage)) {
