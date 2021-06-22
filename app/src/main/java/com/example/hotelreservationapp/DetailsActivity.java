@@ -27,14 +27,13 @@ public class DetailsActivity extends AppCompatActivity {
     public Date currentTime;
     public FirebaseDatabase dataFire;
     public DatabaseReference mData;
-    public TextView txtnombreCuarto, txtnumeroCuarto, txtprecio, txttipoHabitacion;
+    public TextView txtnombreCuarto, txtnumeroCuarto, txtprecio, txttipoHabitacion, txtDescripcion, txtDisponibilidad;
     public EditText txtnumeroPersonas;
     public DatePicker txtfechaReserva, txtfechaSalida;
     public ImageView ivimagenUrl;
     public Button btnenviar;
 
 
-    String idHabitacion;
     String nombreHabitacion;
     public String nombreCliente = "NombreCliente";
     int numeroHabitacion;
@@ -57,7 +56,9 @@ public class DetailsActivity extends AppCompatActivity {
         txtnumeroCuarto = (TextView) findViewById(R.id.numeroHabitacion);
         txtprecio = (TextView) findViewById(R.id.precio);
         txttipoHabitacion = (TextView) findViewById(R.id.tipoHabitacion);
-        txtnumeroPersonas = (EditText)   findViewById(R.id.numeroPersonas);
+        txtDescripcion =  (TextView) findViewById(R.id.informacion);
+        txtDisponibilidad = (TextView) findViewById(R.id.disponiblilidad);
+        txtnumeroPersonas = (EditText) findViewById(R.id.numeroPersonas);
         ivimagenUrl = (ImageView) findViewById(R.id.imgUrl);
         btnenviar = (Button) findViewById(R.id.buttonInsertar);
         mData = dataFire.getInstance().getReference();
@@ -67,7 +68,6 @@ public class DetailsActivity extends AppCompatActivity {
         List<Habitacion> datos = data.getDatos();
         Habitacion dato = datos.get(data.getIdSeleccionado());
 
-        idHabitacion = dato.getId();
         nombreHabitacion = dato.getBedroomName();
         numeroHabitacion = dato.getBedroomNumber();
         precio = dato.getPrice();
@@ -82,16 +82,19 @@ public class DetailsActivity extends AppCompatActivity {
         txtprecio.setText(Double.toString(precio));
         txttipoHabitacion.setText(tipoHabitacion);
         txtnumeroPersonas.setText(Integer.toString(numeroPersonas));
+        txtDescripcion.setText(caracteristicas);
+        txtDisponibilidad.setText(disponibilidad);
         Picasso.get().load(url).into(ivimagenUrl);
     }
 
     public void agregarReserva(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String dateEntrada = sdf.format(txtfechaReserva);
-        String dateSalida = sdf.format(txtfechaSalida);
+        //String dateEntrada = sdf.format(txtfechaReserva);
+        //String dateSalida = sdf.format(txtfechaSalida);
 
-        Reservacion r = new Reservacion(idHabitacion,nombreCliente,dateEntrada, dateSalida, txtnumeroPersonas.getText().toString(),txtnombreCuarto.getText().toString());
-        mData.child("Reservaciones").child(String.valueOf(r.getReservacionId())).setValue(r);
+        Reservacion r = new Reservacion(nombreCliente,"12-11-2023", "12-12-2023", txtnumeroPersonas.getText().toString(),txtnombreCuarto.getText().toString());
+        //Reservacion aux = new Reservacion("1", "nombre","12-11-2023", "12-12-2023", "2", "cuarto");
+        mData.child("Reservaciones").push().setValue(r);
     }
 
     public void enviar(View view) {
